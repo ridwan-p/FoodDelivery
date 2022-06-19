@@ -29,10 +29,10 @@ fun FoodDeliveryTheme(content: @Composable () -> Unit) {
     SideEffect {
         // Update all of the system bar colors to be transparent, and use
         // dark icons if we're in light theme
-        systemUiController.setSystemBarsColor(
-            color = Color.Transparent,
-            darkIcons = true
-        )
+//        systemUiController.setSystemBarsColor(
+//            color = Color.Transparent,
+//            darkIcons = true
+//        )
         systemUiController.setNavigationBarColor(
             color = Color.White
         )
