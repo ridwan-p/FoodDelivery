@@ -17,7 +17,8 @@ fun Navigation() {
         Screen.MyListScreen,
         Screen.AccountScreen
     )
-    NavHost(navController = navController, startDestination = Screen.SignInScreen.route) {
+
+    NavHost(navController = navController, startDestination = Screen.OrderScreen.route) {
         composable(Screen.SignInScreen.route) {
             SignInScreen(navController)
         }

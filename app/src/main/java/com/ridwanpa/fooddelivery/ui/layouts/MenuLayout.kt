@@ -32,12 +32,14 @@ fun MainLayout(
     menuBottom: List<Screen>,
     content: @Composable BoxScope.() -> Unit
 ) {
-    Scaffold(bottomBar = { BottomNavigationBar(navController, menuBottom) }) { padding ->
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController, menuBottom) }
+    ) { padding ->
         Box(Modifier.padding(padding)) {
             Box(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = 16.dp),
+                    .padding(vertical = 16.dp),
                 content = content
             )
         }
@@ -55,8 +57,7 @@ fun BottomNavigationBar(
     BottomNavigation(
         backgroundColor = Color.White,
         contentColor = Gray100,
-        elevation = 16.dp,
-        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+        elevation = 16.dp
     ) {
         items.forEach { item ->
             val selected =
