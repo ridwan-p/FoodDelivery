@@ -20,6 +20,7 @@ private val LightColorPalette = lightColors(
     onBackground = Color.Black,
     onSurface = Color.Black,
     */
+
 )
 
 @Composable
@@ -34,7 +35,7 @@ fun FoodDeliveryTheme(content: @Composable () -> Unit) {
 //            darkIcons = true
 //        )
         systemUiController.setNavigationBarColor(
-            color = Color.White
+            color = Color.Transparent
         )
 
         // setStatusBarsColor() and setNavigationBarColor() also exist

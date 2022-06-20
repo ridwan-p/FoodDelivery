@@ -1,21 +1,20 @@
 package com.ridwanpa.fooddelivery.ui.layouts
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -29,11 +28,19 @@ import com.ridwanpa.fooddelivery.ui.theme.Primary
 @Composable
 fun MainLayout(
     navController: NavController,
-    menuBottom: List<Screen>,
+    topBar: @Composable () -> Unit = {},
     content: @Composable BoxScope.() -> Unit
 ) {
+    val menuBottom = listOf(
+        Screen.HomeScreen,
+        Screen.OrderScreen,
+        Screen.MyListScreen,
+        Screen.AccountScreen
+    )
+
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController, menuBottom) }
+        topBar = topBar,
+        bottomBar = { BottomNavigationBar(navController, menuBottom) },
     ) { padding ->
         Box(Modifier.padding(padding)) {
             Box(
@@ -45,6 +52,26 @@ fun MainLayout(
         }
     }
 }
+
+fun NavController.backToHome(route: String) {
+    val navController = this
+    navController.navigate(route) {
+        // Pop up to the start destination of the graph to
+        // avoid building up a large stack of destinations
+        // on the back stack as users select items
+        navController.graph.findNode(Screen.HomeScreen.route)?.let {
+            popUpTo(it.id) {
+                saveState = true
+            }
+        }
+        // Avoid multiple copies of the same destination when
+        // reselecting the same item
+        launchSingleTop = true
+        // Restore state when reselecting a previously selected item
+        restoreState = true
+    }
+}
+
 
 @Composable
 fun BottomNavigationBar(
@@ -84,21 +111,7 @@ fun BottomNavigationBar(
                     }
                 },
                 onClick = {
-                    navController.navigate(item.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        navController.graph.findNode(Screen.HomeScreen.route)?.let {
-                            popUpTo(it.id) {
-                                saveState = true
-                            }
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
-                    }
+                    navController.backToHome(item.route)
                 }
             )
         }
@@ -138,3 +151,34 @@ fun BottomNavigation(
  * Height of a [BottomNavigation] component
  */
 private val BottomNavigationHeight = 60.dp
+
+@Composable
+fun TobBar(
+    title: String,
+    isBack: Boolean = true,
+    navController: NavController,
+) {
+    TopAppBar(
+        title = {
+            Text(
+                title,
+                style = MaterialTheme.typography.h3,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        actions = { Spacer(modifier = Modifier.width(68.dp)) },
+        navigationIcon = {
+            if (isBack) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Default.ArrowBack, "back")
+                }
+            }
+        },
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.onBackground,
+        elevation = 0.dp,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
+}
