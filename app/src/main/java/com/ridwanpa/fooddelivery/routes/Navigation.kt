@@ -17,7 +17,7 @@ import com.ridwanpa.fooddelivery.ui.screens.*
 fun Navigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.OrderScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.AccountScreen.route) {
         composable(Screen.SignInScreen.route) {
             SignInScreen(navController)
         }
@@ -37,7 +37,7 @@ fun Navigation() {
         composable(Screen.OrderScreen.route) {
             MainLayout(
                 navController = navController,
-                topBar = { TobBar(title = "Order", navController =navController )                }
+                topBar = { TobBar(title = "Order", navController = navController) }
             ) {
                 OrderScreen(navController)
             }
